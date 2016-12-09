@@ -90,4 +90,13 @@ class MysqlCompact{
 		}
 		return $query_str;
 	}
+	public static function limit($data=[]){
+		$query_str='';
+		if(count($data) && is_numeric($data['page']) && is_numeric($data['count'])){
+			$start=$data['page']*$data['count'];
+			$count=$data['count'];
+			$query_str.=" limit {$start},{$count}";
+		}
+		return $query_str;
+	}
 }

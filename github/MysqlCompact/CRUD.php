@@ -20,15 +20,26 @@ trait CRUD{
 		$orderBy_str=MysqlCompact::order(self::filter_field($arg['order_list']));
 		$group_str=MysqlCompact::group(self::filter_field($arg['group_list']),$bind_data);
 		
-		$sql="select * from ".self::$table." {$where_str} {$orderBy_str} {$group_str}";
+		$limit_str=MysqlCompact::limit($arg['limit']);
+		
+		$sql="select * from ".self::$table." 
+		{$where_str} {$orderBy_str} {$group_str} {$limit_str}";
 		
 		if($tmp=DB::select($sql,$bind_data)){
 			$status=true;
 			$list=$tmp;
+			
+			
 		}else{
 			$status=false;
 		}
-		return compact(['status','list','sql','bind_data']);
+		$count_sql="select count(*) count from ".self::$table." 
+		{$where_str} {$orderBy_str} {$group_str} ";
+		if($tmp=DB::select($count_sql,$bind_data)){
+			$total_count=$tmp[0]['count'];
+			$total_page=ceil($total_count/$arg['limit']['count']);
+		}
+		return compact(['status','list','sql','bind_data','total_page','total_count']);
 	}
 	
 	public static function insert($insert){
