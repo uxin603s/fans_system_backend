@@ -41,9 +41,7 @@ trait CRUD{
 		
 		if($tmp=DB::select($sql,$bind_data)){
 			$status=true;
-			$list=$tmp;
-			
-			
+			$list=$tmp;			
 		}else{
 			$status=false;
 		}

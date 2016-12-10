@@ -84,6 +84,8 @@ class MysqlCompact{
 							$query_str.=" && max( CASE `{$item['field']}`  WHEN ? THEN 1 ELSE 0 END ) = 1";
 							$bind_data[]=$value;
 						}
+					}else{
+						$query_str="group by {$item['field']}";
 					}
 				}
 			}
