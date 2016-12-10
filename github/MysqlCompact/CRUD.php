@@ -21,15 +21,29 @@ trait CRUD{
 		return $list;
 	}
 	public static function getList($arg){
-		$bind_data=[];
-		$select_str="*";
-		if($arg['where_list']){
+		$bind_data=[];		
+		$select_str_arr=[];
+		if($arg['select_list']){
 			$arg['select_list']=self::filter_field($arg['select_list']);
 			if(is_array($arg['select_list']) && count($arg['select_list'])){
-				$select_str=implode(",",$arg['select_list']);
+				foreach($arg['select_list'] as $item){
+					$select_str_arr[]=$item;
+				}
 			}
 		}
-		
+		if($arg['count_select_list']){
+			$arg['count_select_list']=self::filter_field($arg['count_select_list']);
+			if(is_array($arg['count_select_list']) && count($arg['count_select_list'])){
+				foreach($arg['count_select_list'] as $item){
+					$select_str_arr[]="count(".$item.")";
+				}
+			}
+		}
+		if(count($select_str_arr)){
+			$select_str=implode(",",$select_str_arr);
+		}else{
+			$select_str="*";
+		}
 		$where_str=MysqlCompact::where(self::filter_field($arg['where_list']),$bind_data);
 		$order_str=MysqlCompact::order(self::filter_field($arg['order_list']));
 		$group_str=MysqlCompact::group(self::filter_field($arg['group_list']));
