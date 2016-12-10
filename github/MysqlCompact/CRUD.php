@@ -31,13 +31,18 @@ trait CRUD{
 		}
 		
 		$where_str=MysqlCompact::where(self::filter_field($arg['where_list']),$bind_data);
-		$orderBy_str=MysqlCompact::order(self::filter_field($arg['order_list']));
-		$group_str=MysqlCompact::group(self::filter_field($arg['group_list']),$bind_data);
+		$order_str=MysqlCompact::order(self::filter_field($arg['order_list']));
+		$group_str=MysqlCompact::group(self::filter_field($arg['group_list']));
+		$have_str=MysqlCompact::have(self::filter_field($arg['have_list']),$bind_data);
 		
 		$limit_str=MysqlCompact::limit($arg['limit']);
 		
-		$sql="select {$select_str} from ".self::$table." 
-		{$where_str} {$orderBy_str} {$group_str} {$limit_str}";
+		$sql="select {$select_str} from ".self::$table;
+		$sql.=$where_str;
+		$sql.=$order_str;
+		$sql.=$group_str;
+		$sql.=$have_str;
+		$sql.=$limit_str;
 		
 		if($tmp=DB::select($sql,$bind_data)){
 			$status=true;
@@ -46,14 +51,17 @@ trait CRUD{
 			$status=false;
 		}
 		if($limit_str){
-			$count_sql="select count(*) count from ".self::$table." 
-			{$where_str} {$orderBy_str} {$group_str} ";
+			$count_sql="select count(*) count from ".self::$table;
+			$count_sql.=$where_str;
+			$count_sql.=$order_str;
+			$count_sql.=$group_str;
+			$count_sql.=$have_str;
 			if($tmp=DB::select($count_sql,$bind_data)){
 				$total_count=$tmp[0]['count'];
 				$total_page=ceil($total_count/$arg['limit']['count']);
 			}
 		}
-		return compact(['status','list','sql','bind_data','total_page','total_count']);
+		return compact(['status','list','sql','bind_data','total_page','total_count','arg']);
 	}
 	
 	public static function insert($insert){

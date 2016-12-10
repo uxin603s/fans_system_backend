@@ -72,20 +72,23 @@ class MysqlCompact{
 		}
 		return $query_str;
 	}
-	public static function group($list,&$bind_data){
+	public static function group($list){
 		$query_str='';
 		if(is_array($list) && count($list)){
-			foreach($list as $item){
-				if($item['type']==0){
-					if(is_array($item['value'])){
-						$query_str="group by {$item['field']} having count({$item['field']})  >=  ? ";
-						$bind_data[]=array_shift($item['value']);
-						foreach($item['value'] as $value){
-							$query_str.=" && max( CASE `{$item['field']}`  WHEN ? THEN 1 ELSE 0 END ) = 1";
-							$bind_data[]=$value;
-						}
-					}else{
-						$query_str="group by {$item['field']}";
+			$query_str="group by ".implode(",",$list);
+		}
+		return $query_str;
+	}
+	public static function have($list,&$bind_data){
+		$query_str='';
+		foreach($list as $item){
+			if($item['type']==0){
+				if(is_array($item['value'])){
+					$query_str="having count({$item['field']})  >=  ? ";
+					$bind_data[]=array_shift($item['value']);
+					foreach($item['value'] as $value){
+						$query_str.=" && max( CASE `{$item['field']}`  WHEN ? THEN 1 ELSE 0 END ) = 1";
+						$bind_data[]=$value;
 					}
 				}
 			}
