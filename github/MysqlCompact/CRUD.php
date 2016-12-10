@@ -1,19 +1,21 @@
 <?php
 trait CRUD{
 	public static function filter_field($list){
-		foreach($list as $field=>$value){
-			if(isset($value['field'])){
-				if(!in_array($value['field'],self::$filter_field_arr)){
-					unset($list[$field]);
-				}
-			}else{
-				if(is_numeric($field)){
-					if(!in_array($value,self::$filter_field_arr)){
+		if($list && is_array($list)){
+			foreach($list as $field=>$value){
+				if(isset($value['field'])){
+					if(!in_array($value['field'],self::$filter_field_arr)){
 						unset($list[$field]);
 					}
 				}else{
-					if(!in_array($field,self::$filter_field_arr)){
-						unset($list[$field]);
+					if(is_numeric($field)){
+						if(!in_array($value,self::$filter_field_arr)){
+							unset($list[$field]);
+						}
+					}else{
+						if(!in_array($field,self::$filter_field_arr)){
+							unset($list[$field]);
+						}
 					}
 				}
 			}
@@ -64,7 +66,7 @@ trait CRUD{
 		}else{
 			$status=false;
 		}
-		if($limit_str){
+		if(!$arg['not_count_flag'] && $limit_str){
 			$count_sql="select count(*) count from ".self::$table;
 			$count_sql.=$where_str;
 			$count_sql.=$order_str;
