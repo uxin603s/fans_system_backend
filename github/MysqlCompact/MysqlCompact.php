@@ -94,11 +94,17 @@ class MysqlCompact{
 			$query_str.=" ";
 			foreach($list as $item){
 				if($item['type']==0){
+					$query_str.="having count({$item['field']})  >=  ? ";
+					$bind_data[]=$item['count'];
 					if(is_array($item['value'])){
-						$query_str.="having count({$item['field']})  >=  ? ";
-						$bind_data[]=array_shift($item['value']);
 						foreach($item['value'] as $value){
 							$query_str.=" && max( CASE `{$item['field']}`  WHEN ? THEN 1 ELSE 0 END ) = 1";
+							$bind_data[]=$value;
+						}
+					}
+					if(is_array($item['valueR'])){
+						foreach($item['valueR'] as $value){
+							$query_str.=" && max( CASE `{$item['field']}`  WHEN ? THEN 1 ELSE 0 END ) = 0";
 							$bind_data[]=$value;
 						}
 					}
