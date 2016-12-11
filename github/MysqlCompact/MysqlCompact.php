@@ -3,7 +3,7 @@
 $where_list=[
 	[
 		"field"=>"",//欄位名稱
-		"type"=>"",//組合符號0:=,1:!=,2:like,3:not like
+		"type"=>"",//組合符號0:=,1:!=,2:like,3:not like,4:大於,5:小於
 		"value"=>"",//欄位值
 	]
 ];
@@ -14,6 +14,8 @@ class MysqlCompact{
 		"!=",
 		"like",
 		"not like",
+		">",
+		"<",
 	];
 	public static function where($list,&$bind_data){
 		$query_str='';
@@ -38,7 +40,7 @@ class MysqlCompact{
 				$symbol=self::$type_list[$type];
 				//欄位白名單
 				if($symbol){
-					if(in_array($field,$and_array)){
+					if(in_array($field,$and_array) || in_array($type,[4,5])){
 						$query_str.=" && {$field} {$symbol} ?";
 						$bind_data[]=$value;
 					}else if(in_array($field,$or_array)){
