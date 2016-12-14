@@ -1,26 +1,26 @@
 
-¥¼¨ÓÁÙ·|·s¼WÅv­­ªí
+æœªä¾†é‚„æœƒæ–°å¢žæ¬Šé™è¡¨
 
 
 http://fans.cfd888.info/
 field
 	id:auto_id
-	name:¯»µ·¹Î¦WºÙ
-	fb_id:fbªºID
-	status:ª¬ºA 0:¤U¬[,1:¤W¬[,2:¥Ó¶D,3:°±Åv
-	comment:µù¸Ñ
-	fan_count:¯»µ·¼Æ¶q
-	last_post_time_int:³Ì«á¤@½gpo¤å®É¶¡
+	name:ç²‰çµ²åœ˜åç¨±
+	fb_id:fbçš„ID
+	status:ç‹€æ…‹ 0:ä¸‹æž¶,1:ä¸Šæž¶,2:ç”³è¨´,3:åœæ¬Š
+	comment:è¨»è§£
+	fan_count:ç²‰çµ²æ•¸é‡
+	last_post_time_int:æœ€å¾Œä¸€ç¯‡poæ–‡æ™‚é–“
 	
-	
+å»ºè­°ä¸€æ¬¡æœ€å¤š30ç­†ä¸ç„¶æœƒæœ‰éŒ¯èª¤	
 $insert['fb_ids']=[1,2,3];
 FansList::insert($insert);
 http://fans.cfd888.info/ajax.php?func_name=FansList::insert&arg={"fb_ids":["1","2","3"]}
 
 
 where_list->type
-0:µ¥©ó,1:¤£µ¥©ó,2:like,3:not like,4:¤j©ó,5:¤p©ó
-Äæ¦ì¬Û¦P·|ÅÜ¦¨where in
+0:ç­‰æ–¼,1:ä¸ç­‰æ–¼,2:like,3:not like,4:å¤§æ–¼,5:å°æ–¼
+æ¬„ä½ç›¸åŒæœƒè®Šæˆwhere in
 
 $where_list=[
 	[field=>"id",type=>"0","value"=>"1",],
@@ -31,10 +31,10 @@ FansList::getList([where_list=>$where_list]);
 http://fans.cfd888.info/ajax.php?func_name=FansList::getList&arg={"where_list":[{"field":"id","type":"0","value":"1"}]}
 
 
-$update['comment']="´ú¸Õ¯»µ·¹Î";
+$update['comment']="æ¸¬è©¦ç²‰çµ²åœ˜";
 $where['id']="1";
 FansList::update(["update"=>$update,"where"=>$where]);
-http://fans.cfd888.info/ajax.php?func_name=FansList::update&arg={"update":{"comment":"´ú¸Õ¯»µ·¹Î123"},"where":{"id":1}}
+http://fans.cfd888.info/ajax.php?func_name=FansList::update&arg={"update":{"comment":"æ¸¬è©¦ç²‰çµ²åœ˜123"},"where":{"id":1}}
 
 $where['id']="1";
 FansList::delete($where);
