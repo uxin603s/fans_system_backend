@@ -28,7 +28,19 @@ while(true){
 		$result=FansList::getOnline(compact(["ids"]));
 		
 		if($result['status']){
-			FansList::updateOnlineSuccess($result['list']);
+			FansList::getStruct($result['list'],function($arg){
+				$arg=[
+					"update"=>[
+						'last_post_time_int'=>$arg['last_post_time_int'],
+						'fan_count'=>$arg['fan_count'],
+						'name'=>$arg['name'],
+					],
+					"where"=>[
+						'fb_id'=>$arg['fb_id'],
+					],
+				];
+				FansList::update($arg);
+			});
 		}
 		if($result['http_code']==200){
 			$failId=array_merge($result['failIds'],$failId);
@@ -70,7 +82,6 @@ foreach($failId as $id){
 				],
 			];
 			FansList::update($arg);
-			
 		}else if($result['http_code']==400){
 			var_dump($result['http_response_header']);
 			$arg=[

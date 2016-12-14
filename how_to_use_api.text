@@ -1,0 +1,41 @@
+
+未來還會新增權限表
+
+
+http://fans.cfd888.info/
+field
+	id:auto_id
+	name:粉絲團名稱
+	fb_id:fb的ID
+	status:狀態 0:下架,1:上架,2:申訴,3:停權
+	comment:註解
+	fan_count:粉絲數量
+	last_post_time_int:最後一篇po文時間
+	
+	
+$insert['fb_id']="粉絲團id";
+FansList::insert($insert);
+http://fans.cfd888.info/ajax.php?func_name=FansList::insert&arg={"fb_id":"粉絲團id"}
+
+
+where_list->type
+0:等於,1:不等於,2:like,3:not like,4:大於,5:小於
+欄位相同會變成where in
+
+$where_list=[
+	[field=>"id",type=>"0","value"=>"1",],
+];
+
+
+FansList::getList([where_list=>$where_list]);
+http://fans.cfd888.info/ajax.php?func_name=FansList::getList&arg={"where_list":[{"field":"id","type":"0","value":"1"}]}
+
+
+$update['comment']="測試粉絲團";
+$where['id']="1";
+FansList::update(["update"=>$update,"where"=>$where]);
+http://fans.cfd888.info/ajax.php?func_name=FansList::update&arg={"update":{"comment":"測試粉絲團123"},"where":{"id":1}}
+
+$where['id']="1";
+FansList::delete($where);
+http://fans.cfd888.info/ajax.php?func_name=FansList::delete&arg={"id":"1"}
