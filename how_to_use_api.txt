@@ -13,9 +13,9 @@ field
 	last_post_time_int:最後一篇po文時間
 	
 	
-$insert['fb_id']="粉絲團id";
+$insert['fb_ids']=[1,2,3];
 FansList::insert($insert);
-http://fans.cfd888.info/ajax.php?func_name=FansList::insert&arg={"fb_id":"粉絲團id"}
+http://fans.cfd888.info/ajax.php?func_name=FansList::insert&arg={"fb_ids":["1","2","3"]}
 
 
 where_list->type

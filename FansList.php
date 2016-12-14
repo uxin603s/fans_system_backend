@@ -13,8 +13,8 @@ class FansList{
 		$url.=".limit(1){created_time}";
 		$url.="&access_token={$FB['id']}|{$FB['secret']}";
 		$url.="&ids=";
-		if(is_numeric($arg['fb_id'])){
-			$result=self::getOnline(["ids"=>[$arg['fb_id']]]);
+		if(is_array($arg['fb_ids'])){
+			$result=self::getOnline(["ids"=>$arg['fb_ids']]);
 			if($result['status']){
 				return self::getStruct($result['list'],function($arg){
 					return self::tmp_insert($arg);
