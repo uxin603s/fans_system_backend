@@ -83,7 +83,7 @@ class MysqlCompact{
 		$query_str='';
 		if(is_array($list) && count($list)){
 			$query_str.=" ";
-			$query_str="group by ".implode(",",$list);
+			$query_str.="group by ".implode(",",$list);
 			$query_str.=" ";
 		}
 		return $query_str;
