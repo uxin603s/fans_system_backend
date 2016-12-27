@@ -1,10 +1,10 @@
 <?php
 class FansList{
 	use CRUD {
-		CRUD::insert as tmp_insert;
+		CRUD::insert as private tmp_insert;
 	}
 	public static $table="fans_list";
-	public static $filter_field_arr=["id","fb_id","name","status","comment","fan_count","last_post_time_int"];
+	public static $filter_field_arr=["id","fb_id","name","status","comment","fan_count","last_post_time_int","updated_time_int"];
 	
 	public static function insert($arg){
 		$FB=json_decode(file_get_contents(__DIR__."/config/FB.json"),1);
@@ -20,7 +20,11 @@ class FansList{
 					return self::tmp_insert($arg);
 				});
 			}else{
-				return $result;
+				$insert=[];
+				foreach($result['failIds'] as $fb_id){
+					$insert[]=self::tmp_insert(compact(["fb_id",]));
+				}
+				return $insert;
 			}
 		}
 	}

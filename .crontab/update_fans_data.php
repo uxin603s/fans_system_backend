@@ -28,9 +28,12 @@ while(true){
 		$result=FansList::getOnline(compact(["ids"]));
 		
 		if($result['status']){
+			
 			FansList::getStruct($result['list'],function($arg){
+				
 				$arg=[
 					"update"=>[
+						'updated_time_int'=>time(),
 						'last_post_time_int'=>$arg['last_post_time_int'],
 						'fan_count'=>$arg['fan_count'],
 						'name'=>$arg['name'],
@@ -39,7 +42,11 @@ while(true){
 						'fb_id'=>$arg['fb_id'],
 					],
 				];
-				FansList::update($arg);
+				$result=FansList::update($arg);
+				
+				// echo "\n----\n";
+				var_dump($result);
+				// sleep(1);
 			});
 		}
 		if($result['http_code']==200){
