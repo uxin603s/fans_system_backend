@@ -1,33 +1,12 @@
 <?php
 class FansList{
 	use CRUD {
-		CRUD::insert as private tmp_insert;
+		// CRUD::insert as private tmp_insert;
 	}
 	public static $table="fans_list";
 	public static $filter_field_arr=["id","fb_id","name","status","comment","fan_count","last_post_time_int","updated_time_int"];
 	
-	public static function insert($arg){
-		$FB=json_decode(file_get_contents(__DIR__."/config/FB.json"),1);
-		$url="";
-		$url.="https://graph.facebook.com?fields=fan_count,name,id,posts";
-		$url.=".limit(1){created_time}";
-		$url.="&access_token={$FB['id']}|{$FB['secret']}";
-		$url.="&ids=";
-		if(is_array($arg['fb_ids'])){
-			$result=self::getOnline(["ids"=>$arg['fb_ids']]);
-			if($result['status']){
-				return self::getStruct($result['list'],function($arg){
-					return self::tmp_insert($arg);
-				});
-			}else{
-				$insert=[];
-				foreach($result['failIds'] as $fb_id){
-					$insert[]=self::tmp_insert(compact(["fb_id",]));
-				}
-				return $insert;
-			}
-		}
-	}
+	
 	public static function getOnline($arg){
 		$FB=json_decode(file_get_contents(__DIR__."/config/FB.json"),1);
 		$url="";
