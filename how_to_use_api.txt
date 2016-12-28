@@ -1,5 +1,6 @@
 
-未來還會新增權限表
+已新增權限表
+
 
 
 http://fans.cfd888.info/
@@ -39,3 +40,8 @@ http://fans.cfd888.info/ajax.php?func_name=FansList::update&arg={"update":{"comm
 $where['id']="1";
 FansList::delete($where);
 http://fans.cfd888.info/ajax.php?func_name=FansList::delete&arg={"id":"1"}
+
+取得快取資料
+$where['id']="1";
+FansList::getCache($where);
+http://fans.cfd888.info/ajax.php?func_name=FansList::getCache&arg={"id":"1"}

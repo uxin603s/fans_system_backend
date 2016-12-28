@@ -5,14 +5,33 @@ class FansList{
 	}
 	public static $table="fans_list";
 	public static $filter_field_arr=["id","fb_id","name","status","comment","fan_count","last_post_time_int","updated_time_int"];
+	public static function getCache($arg){
+		
+		if(is_array($arg['id'])){
+			$list=[];
+			foreach($arg['id'] as $id){
+				if(is_numeric($id)){
+					$list[$id]=Cache::get_one("FansList",$id);
+				}
+			}
+		}else{
+			$list=Cache::get_all("FansList");
+		}
+		$list=array_values($list);
+		$status=true;
+		return compact(['status','list']);	
+	}
 	public static function flushCache(){
-		$tmp=self::getList(null);
+		$where_list=[
+			["field"=>"status","type"=>0,"value"=>1],
+		];
+		$FansList=[];
+		$tmp=self::getList(compact(["where_list"]));
 		if($tmp['status']){
 			foreach($tmp['list'] as $item){
 				$FansList[$item['id']]=$item;
 			}
 		}
-		var_dump($FansList);
 		Cache::run("FansList",$FansList);
 	}
 	

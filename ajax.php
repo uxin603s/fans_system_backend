@@ -1,12 +1,6 @@
 <?php
 include_once __DIR__."/include.php";
 
-// echo "<pre>";
-// FansList::flushCache();
-
-// var_dump(Cache::get_all("FansList"));
-// exit;
-
 session_start();
 session_write_close();
 
