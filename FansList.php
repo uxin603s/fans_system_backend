@@ -5,7 +5,16 @@ class FansList{
 	}
 	public static $table="fans_list";
 	public static $filter_field_arr=["id","fb_id","name","status","comment","fan_count","last_post_time_int","updated_time_int"];
-	
+	public static function flushCache(){
+		$tmp=self::getList(null);
+		if($tmp['status']){
+			foreach($tmp['list'] as $item){
+				$FansList[$item['id']]=$item;
+			}
+		}
+		var_dump($FansList);
+		Cache::run("FansList",$FansList);
+	}
 	
 	public static function getOnline($arg){
 		$FB=json_decode(file_get_contents(__DIR__."/config/FB.json"),1);
