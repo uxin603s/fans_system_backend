@@ -11,11 +11,11 @@ class FansList{
 			$list=[];
 			foreach($arg['id'] as $id){
 				if(is_numeric($id)){
-					$list[$id]=Cache::get_one("FansList",$id);
+					$list[$id]=Cache::group_get_one("FansList",$id);
 				}
 			}
 		}else{
-			$list=Cache::get_all("FansList");
+			$list=Cache::group_get_all("FansList");
 		}
 		$list=array_values($list);
 		$status=true;
@@ -32,7 +32,7 @@ class FansList{
 				$FansList[$item['id']]=$item;
 			}
 		}
-		Cache::run("FansList",$FansList);
+		Cache::group_save("FansList",$FansList);
 	}
 	
 	public static function getOnline($arg){
