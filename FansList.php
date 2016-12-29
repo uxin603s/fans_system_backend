@@ -106,4 +106,18 @@ class FansList{
 		}
 		return $result;
 	}
+	public static function getFB($arg){
+		$path=__DIR__."/config/FB.json";
+		
+		// return $arg;
+		return json_decode(file_get_contents($path),1);
+	}
+	public static function setFB($arg){
+		$path=__DIR__."/config/FB.json";
+		$data=[
+			'id'=>$arg['id'],
+			'secret'=>$arg['secret'],
+		];
+		return file_put_contents($path,json_encode($data));
+	}
 }
