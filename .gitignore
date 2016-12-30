@@ -1,1 +1,3 @@
-white_ip.json
+config
+error_log
+*.log
