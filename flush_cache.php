@@ -5,10 +5,10 @@ include_once __DIR__."/include.php";
 FansList::flushCache();
 
 
-$list=FansList::getCache();
+// $list=FansList::getCache();
 // $list=Fcache::where();
 // $list=Fcache::del_all();
-var_dump($list);
+// var_dump($list);
 
 
 // var_dump(Cache::group_get_all("WebRelation1"));

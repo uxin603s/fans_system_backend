@@ -5,7 +5,7 @@ class FansList{
 	}
 	public static $table="fans_list";
 	public static $filter_field_arr=["id","fb_id","name","status","comment","fan_count","last_post_time_int","updated_time_int"];
-	public static $cache_key_field=["id","fb_id"];
+	public static $cache_key_field=["id","fb_id","status"];
 	
 	public static function getOnline($arg){
 		$FB=json_decode(file_get_contents(__DIR__."/config/FB.json"),1);
