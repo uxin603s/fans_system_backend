@@ -2,14 +2,13 @@
 include_once __DIR__."/include.php";
 
 session_start();
-session_write_close();
 
 
 if(isset($_SESSION['rid']) && in_array(0,$_SESSION['rid'])){
 	
 }else{
 	if(isset($_GET['access_token'])){
-		UserSystemHelp::login("UserSystemHelp::success","UserSystemHelp::error",false);
+		UserSystemHelp::login();
 	}
 }
 
