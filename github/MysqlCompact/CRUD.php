@@ -131,7 +131,22 @@ trait CRUD{
 		return compact(['status','message']);
 	}
 	
-	public static function getCache($where=[],$not_where=[]){
+	public static function getCache($arg=[]){
+		if($arg['where']){
+			$where=$arg['where'];
+		}else{
+			$where=[];
+		}
+		if($arg['not_where']){
+			$not_where=$arg['not_where'];
+		}else{
+			$not_where=[];
+		}
+		if($arg['limit']){
+			$limit=$arg['limit'];
+		}else{
+			$limit=['count'=>200,'page'=>0,'rand'=>false,'sort'=>false,];
+		}
 		$query_field=self::$cache_key_field;
 		if(!is_array($query_field))return false;
 		$preg_arr=[__CLASS__];
@@ -155,12 +170,21 @@ trait CRUD{
 			}
 		}
 		$preg=implode("\.",$preg_arr);
-		$preg="/{$preg}/";
+		$preg="/^{$preg}$/";
 		
-		$count=Cache::get(__CLASS__.".index_page");
+		$count=Cache::get(__CLASS__.".index_page")-1;
 		
 		$result=[];
-		for($page=0;$page<$count;$page++){
+		$total=0;
+		$pages=range(0,$count);
+		
+		if($limit['sort']){
+			$pages=array_reverse($pages);
+		}
+		if($limit['rand']){
+			shuffle($pages);
+		}
+		foreach($pages as $page){
 			$index_page=Cache::get(__CLASS__.".index_page.{$page}");
 			if($index_page)
 			foreach($index_page as $key_name){
@@ -178,11 +202,21 @@ trait CRUD{
 						}
 					}
 					
-					if($value=Cache::get($key_name,30*60)){
-						$result[$key_name]=$value;
+					
+					
+					if(($limit['count']*$limit['page'])<=$total){
+						if($value=Cache::get($key_name,30*60)){
+							$result[$key_name]=$value;
+						}
 					}
+					if(count($result)>=$limit['count']){
+						break 2;
+					}
+					
+					++$total;
 				}
 			}
+			
 		}
 		return $result;
 	}
@@ -202,8 +236,8 @@ trait CRUD{
 				$count=self::$limit;
 				while(1){
 					$index_array=[];
-					$limit=['page'=>$page,'count'=>$count];
-					$tmp=self::getList(compact("limit"));
+					$arg['limit']=['page'=>$page,'count'=>$count];
+					$tmp=self::getList($arg);
 					if($tmp['status']){
 						foreach($tmp['list'] as $value){
 							$key_arr=[__CLASS__];
@@ -220,8 +254,9 @@ trait CRUD{
 						break;
 					}
 					$page++;
+					var_dump($page);
 				}
-				Fcache::set(__CLASS__.".index_page",$page,30*60);
+				Cache::set(__CLASS__.".index_page",$page,30*60);
 				break;
 			case 1://insert
 				$key_arr=[__CLASS__];
@@ -236,7 +271,7 @@ trait CRUD{
 				break;
 			case 2:case 3://update//delete
 				$update_index=[];
-				$list=self::getCache($arg['where']);
+				$list=self::getCache(['where'=>$arg['where']]);
 				foreach($list as $key=>$val){
 					if($arg['update']){
 						foreach($arg['update'] as $u_key=>$u_val){
