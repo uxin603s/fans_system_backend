@@ -15,6 +15,5 @@ include_once __DIR__."/github/Cache/Fcache.php";
 include_once __DIR__."/FansList.php";
 
 
-DB::query("SET NAMES utf8");
 
 Mcache::$prefix="cfd_chichi_fans";

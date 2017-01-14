@@ -5,7 +5,7 @@ include_once __DIR__."/include.php";
 FansList::flushCache();
 
 
-// $list=FansList::getCache();
+// $list=FansList::getCache(['status'=>1]);
 // $list=Fcache::where();
 // $list=Fcache::del_all();
 // var_dump($list);

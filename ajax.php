@@ -8,6 +8,7 @@ if(isset($_SESSION['rid']) && in_array(0,$_SESSION['rid'])){
 	
 }else{
 	if(isset($_GET['access_token'])){
+		UserSystemHelp::$location=false;
 		UserSystemHelp::login();
 	}
 }
