@@ -3,7 +3,8 @@ class UserSystemHelp{
 	public static $location=true;
 	public static $local=false;
 	public static function login($success="UserSystemHelp::success",$error="UserSystemHelp::error"){
-		if($local){
+		setcookie("access_token","",time()-60*60);
+		if(self::$local){
 			$data['rid']=[0];
 			UserSystemHelp::success($data);
 			exit;
@@ -52,7 +53,6 @@ class UserSystemHelp{
 		
 		$access_token=$data['access_token'];
 		
-		
 		if($data['go_to'] && is_numeric(strpos("http://{$_SERVER['HTTP_HOST']}",$data['go_to']))){
 			$go_to=$data['go_to'];
 		}else if($_COOKIE['go_to']){
@@ -69,6 +69,7 @@ class UserSystemHelp{
 		session_write_close();
 		
 		//data寫入快取方便主站掛點時利用 及主站 刷新外部網站用
+		
 		Fcache::set("userSystem_{$access_token}",$data);
 		setcookie("access_token",$access_token,time()+60*60);
 		//data找導頁資料並導頁
@@ -108,6 +109,7 @@ class UserSystemHelp{
 	public static function checkSession(){
 		if($_SESSION['access_token']){
 			$data=Fcache::get("userSystem_{$_SESSION['access_token']}");
+			
 			$message=[];
 			$status=true;
 			if(session_id()!=$data['session_id']){
@@ -122,7 +124,7 @@ class UserSystemHelp{
 				session_destroy();
 				$message=implode(",",$message);
 				$reload=1;
-				$result=compact(['status',"message","reload"]);
+				$result=compact(['status',"message","reload","data"]);
 				echo json_encode($result);
 				exit;
 			}
