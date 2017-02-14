@@ -90,6 +90,8 @@ class FansList{
 			'id'=>$arg['id'],
 			'secret'=>$arg['secret'],
 		];
+		var_dump($path);
+		var_dump($arg);
 		return file_put_contents($path,json_encode($data));
 	}
 }
