@@ -121,7 +121,8 @@ trait CRUD{
 			$status=false;
 			$message="刪除失敗";
 		}
-		return compact(['status','message']);
+
+		return compact(['status','message','where']);
 	}
 	public static function flush($arg=[],$type=0){
 		
