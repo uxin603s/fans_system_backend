@@ -5,10 +5,9 @@ class FansList{
 	}
 	public static $table="fans_list";
 	public static $filter_field_arr=["id","fb_id","name","status","comment","fan_count","last_post_time_int","updated_time_int"];
-	public static $cache_key_field=["id","fb_id","status"];
 	
 	public static function getOnline($arg){
-		$FB=json_decode(file_get_contents(__DIR__."/config/FB.json"),1);
+		$FB=json_decode(file_get_contents(__DIR__."/config.json"),1);
 		$url="";
 		$url.="https://graph.facebook.com?fields=fan_count,name,id,posts";
 		$url.=".limit(1){created_time}";
@@ -79,14 +78,25 @@ class FansList{
 		return $result;
 	}
 	public static function getFB($arg){
-		$path=__DIR__."/config/FB.json";
+		$path=__DIR__."/config.json";
+		if(file_exists($path)){
+			$tmp=json_decode(file_get_contents($path),1);
+			$data=$tmp['fb'];
+		}else{
+			$data=[];
+		}
 		
 		// return $arg;
-		return json_decode(file_get_contents($path),1);
+		return $data;
 	}
 	public static function setFB($arg){
-		$path=__DIR__."/config/FB.json";
-		$data=[
+		$path=__DIR__."/config.json";
+		if(file_exists($path)){
+			$data=json_decode(file_get_contents($path),1);
+		}else{
+			$data=[];
+		}
+		$data['fb']=[
 			'id'=>$arg['id'],
 			'secret'=>$arg['secret'],
 		];
